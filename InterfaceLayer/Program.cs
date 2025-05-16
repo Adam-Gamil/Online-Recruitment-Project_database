@@ -1,5 +1,6 @@
-﻿using System;
-using BuisnessLayer;
+﻿using BuisnessLayer;
+using BusinessLayer;
+using System;
 
 namespace Online_Recuritment_Project
 {
@@ -58,6 +59,9 @@ namespace Online_Recuritment_Project
                 Console.WriteLine("4. Find Employer by ID");
                 Console.WriteLine("5. Add New Employer");
                 Console.WriteLine("6. Update Existing Employer");
+                Console.WriteLine("7. Apply for Job");
+                Console.WriteLine("8. Show Applied Jobs");
+                Console.WriteLine("9. Delete Applied Job");
                 Console.WriteLine("0. Exit");
                 Console.Write("Choose an option: ");
                 string choice = Console.ReadLine();
@@ -81,6 +85,15 @@ namespace Online_Recuritment_Project
                         break;
                     case "6":
                         UpdateEmployer();
+                        break;
+                    case "7":
+                        ApplyForJob();
+                        break;
+                    case "8":
+                        ShowAppliedJobs();
+                        break;
+                    case "9":
+                        DeleteAppliedJob();
                         break;
                     case "0":
                         return;
@@ -308,6 +321,87 @@ namespace Online_Recuritment_Project
             else
                 Console.WriteLine("Failed to update Employer.");
         }
+
+        // Apply part
+        static void ApplyForJob()
+        {
+            Console.Write("Enter JobSeeker ID: ");
+            if (!int.TryParse(Console.ReadLine(), out int jobSeekerID))
+            {
+                Console.WriteLine("Invalid JobSeeker ID.");
+                return;
+            }
+
+            Console.Write("Enter Vacancy ID to apply for: ");
+            if (!int.TryParse(Console.ReadLine(), out int vacancyID))
+            {
+                Console.WriteLine("Invalid Vacancy ID.");
+                return;
+            }
+
+            
+            var jobSeeker = clsJobSeeker.FindJobSeekerByID(jobSeekerID);
+            if (jobSeeker == null)
+            {
+                Console.WriteLine("JobSeeker not found.");
+                return;
+            }
+
+            string result = clsApplying.Apply(vacancyID, jobSeekerID);
+            Console.WriteLine(result);
+        }
+
+        static void ShowAppliedJobs()
+        {
+            Console.Write("Enter JobSeeker ID: ");
+            if (!int.TryParse(Console.ReadLine(), out int jobSeekerID))
+            {
+                Console.WriteLine("Invalid JobSeeker ID.");
+                return;
+            }
+
+            
+            var jobSeeker = clsJobSeeker.FindJobSeekerByID(jobSeekerID);
+            if (jobSeeker == null)
+            {
+                Console.WriteLine("JobSeeker not found.");
+                return;
+            }
+
+            string appliedJobs = clsApplying.ShowAppliedJobs(jobSeekerID);
+            Console.WriteLine(appliedJobs);
+        }
+
+        static void DeleteAppliedJob()
+        {
+            Console.Write("Enter JobSeeker ID: ");
+            if (!int.TryParse(Console.ReadLine(), out int jobSeekerID))
+            {
+                Console.WriteLine("Invalid JobSeeker ID.");
+                return;
+            }
+
+            Console.Write("Enter Applying ID to delete: ");
+            if (!int.TryParse(Console.ReadLine(), out int applyingID))
+            {
+                Console.WriteLine("Invalid Applying ID.");
+                return;
+            }
+
+            
+            var jobSeeker = clsJobSeeker.FindJobSeekerByID(jobSeekerID);
+            if (jobSeeker == null)
+            {
+                Console.WriteLine("JobSeeker not found.");
+                return;
+            }
+
+            string result = clsApplying.DeleteAppliedJob(applyingID, jobSeekerID);
+            Console.WriteLine(result);
+        }
+
+
+
 
     }
 }
