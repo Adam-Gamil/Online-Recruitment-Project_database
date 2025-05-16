@@ -45,7 +45,12 @@ namespace DataLayer
         {
             DataTable dt = new DataTable();
             SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
-            string query = "SELECT * FROM Applying WHERE jobSeekerID = @jobSeekerID";
+
+            string query = @"
+                            SELECT applying.applyingID, vacancies.jobTitle, applying.acceptanceStatus AS status, applying.applyingDate AS date
+                            FROM applying
+                            INNER JOIN vacancies ON applying.vacancyID = vacancies.vacancyID
+                            WHERE applying.jobSeekerID = @jobSeekerID";
 
             SqlCommand command = new SqlCommand(query, connection);
             command.Parameters.AddWithValue("@jobSeekerID", jobSeekerID);

@@ -26,7 +26,7 @@ namespace BusinessLayer
         }
 
         
-        // To-do => 1- check if the jobseekerID exists first
+      
         public static string Apply(int vacancyID, int jobseekerID)
         {
             DateTime now = DateTime.Now;
@@ -49,11 +49,12 @@ namespace BusinessLayer
             string result = "Applied Jobs:\n";
             foreach (DataRow row in dt.Rows)
             {
-                result += $"[ID: {row["applyingID"]}] VacancyID: {row["vacancyID"]}, Status: {row["acceptanceStatus"]}, Date: {row["applyingDate"]}\n";
+                result += $"[Application ID: {row["applyingID"]}] Job Title: {row["jobTitle"]}, Status: {row["status"]}, Date: {Convert.ToDateTime(row["date"]).ToShortDateString()}\n";
             }
 
             return result;
         }
+
 
         public static string DeleteAppliedJob(int applyingID, int jobseekerID)
         {
