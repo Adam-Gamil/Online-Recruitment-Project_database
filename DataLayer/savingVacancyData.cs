@@ -40,32 +40,67 @@ namespace DataLayer
             return savingID;
         }
 
-        //public static DataTable GetSavedJobs(int jobSeekerID)
-        //{
-        //    DataTable dt = new DataTable();
-        //    SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
-        //    string query = "SELECT * FROM SavingVacancy WHERE jobSeekerID = @jobSeekerID";
+        public static DataTable GetSavedJobs(int jobSeekerID)
+        {
+            DataTable dt = new DataTable();
+            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
 
-        //    SqlCommand command = new SqlCommand(query, connection);
-        //    command.Parameters.AddWithValue("@jobSeekerID", jobSeekerID);
+            string query = @"
+                            SELECT SavingVacancy.savingID, vacancies.jobTitle, SavingVacancy.savingDate AS date
+                            FROM SavingVacancy
+                            INNER JOIN vacancies ON SavingVacancy.vacancyID = vacancies.vacancyID
+                            WHERE SavingVacancy.jobSeekerID = @jobSeekerID";
 
-        //    try
-        //    {
-        //        connection.Open();
-        //        SqlDataAdapter adapter = new SqlDataAdapter(command);
-        //        adapter.Fill(dt);
-        //    }
-        //    catch
-        //    {
-        //        dt = null;
-        //    }
-        //    finally
-        //    {
-        //        connection.Close();
-        //    }
+            SqlCommand command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@jobSeekerID", jobSeekerID);
 
-        //    return dt;
-        //}
+            try
+            {
+                connection.Open();
+                SqlDataAdapter adapter = new SqlDataAdapter(command);
+                adapter.Fill(dt);
+            }
+            catch
+            {
+                dt = null;
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            return dt;
+        }
+
+        public static bool CheckIfSaved(int vacancyID, int jobSeekerID)
+        {
+            bool isFound = false;
+            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            string query = "SELECT Found = 1 FROM SavingVacancy WHERE vacancyID = @vacancyID AND jobSeekerID = @jobSeekerID";
+            SqlCommand command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@vacancyID", vacancyID);
+            command.Parameters.AddWithValue("@jobSeekerID", jobSeekerID);
+            int count = 0;
+            try
+            {
+                connection.Open();
+                object result = command.ExecuteScalar();
+                if (result != null)
+                {
+                    isFound = true;
+                }
+            }
+            catch
+            {
+                isFound = false;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return isFound;
+        }
+        
 
         public static bool DeleteSaving(int savingID, int jobSeekerID)
         {

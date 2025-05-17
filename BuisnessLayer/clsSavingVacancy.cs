@@ -24,7 +24,7 @@ namespace BusinessLayer
         }
 
         
-        // To-do => 1- check if the jobseekerID exists first
+        
         public static string Save(int vacancyID, int jobseekerID)
         {
             DateTime now = DateTime.Now;
@@ -32,25 +32,21 @@ namespace BusinessLayer
             int newID = clssavingVacancyData.AddNewSaving( vacancyID,  jobseekerID,  now);
 
             if (newID != -1)
-                return $"Application submitted successfully with ID {newID}.";
+                return $"Vacancy saved successfully with ID {newID}.";
             else
                 return "Error: Failed to submit application.";
         }
 
-        //public static string ShowSavedJobs(int jobseekerID)
-        //{
-        //    DataTable dt = clssavingVacancyData.GetSavedJobs(jobseekerID);
-        //    if (dt == null || dt.Rows.Count == 0)
-        //        return "No Saved jobs found.";
+        public static DataTable ShowSavedJobs(int jobseekerID)
+        {
+            return clssavingVacancyData.GetSavedJobs(jobseekerID);
+            
+        }
 
-        //    string result = "Saved Jobs:\n";
-        //    foreach (DataRow row in dt.Rows)
-        //    {
-        //        result += $"[Saving ID: {row["savingID"]}] VacancyID: {row["vacancyID"]}, Date: {row["savingDate"]}\n";
-        //    }
-
-        //    return result;
-        //}
+        public static bool CheckIfSaved(int vacancyID, int jobseekerID)
+        {
+            return clssavingVacancyData.CheckIfSaved(vacancyID, jobseekerID);
+        }
 
         public static string DeleteSavedJob(int savingID, int jobseekerID)
         {

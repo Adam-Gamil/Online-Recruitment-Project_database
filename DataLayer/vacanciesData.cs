@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
@@ -59,6 +60,65 @@ namespace DataLayer
             return isFound;
         }
 
+
+        public static DataTable getAllVacancies()
+        {
+            DataTable table = new DataTable();
+            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            string query = "Select * From Vacancies;";
+            SqlCommand command = new SqlCommand(query, connection);
+
+            try
+            {
+                connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    table.Load(reader);
+                }
+
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+                table = null;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return table;
+        }
+
+        public static DataTable getVacanciesByEmployerID(int employerID)
+        {
+            DataTable table = new DataTable();
+            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            string query = "Select * From Vacancies Where employerID = @employerID;";
+            SqlCommand command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@employerID", employerID);
+            try
+            {
+                connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    table.Load(reader);
+                }
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+                table = null;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return table;
+        }
         public static int AddNewVacancy(int employerID, string industry, string jobTitle, string description, string location, string jobStatus, DateTime postDate, string requiredExperience, double salary)
         {
             int vacancyID = -1;

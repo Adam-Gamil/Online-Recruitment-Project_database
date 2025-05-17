@@ -8,69 +8,56 @@ namespace Online_Recuritment_Project
     internal class Program
     {
         static void Main(string[] args)
-
-        /*
-         * 
-         * 1- add vacancies -> which employer will add it ?
-         * 
-                                                                                                                                         * 2- add job seekers (done)
-                                                                                                                                         * 
-                                                                                                                                         * 3- add employers (done)
-                                                                                                                                         * 
-                                                                                                                                         * 4- update employers (done)
-                                                                                                                                         * 
-                                                                                                                                         * 5- update job seekers (done)
-         * 
-         * 6- apply for jobs -> which job seeker will apply for which job 
-         * 
-         * 7- save jobs -> which job seeker will save which job
-         * 
-         * 8- show applied jobs for a speciic user -> enter job seeker id and then show the applied jobs
-         * 
-         * 9- show saved jobs for a specific user -> enter job seeker id and then show the saved jobs
-         * 
-         * 10- show added jobs for a specific Employer -> enter employer id and then show the added jobs
-         * 
-         * 11- show all jobs
-         * 
-         * 12- delete applied job -> ask for job seeker id and appliedJob id and delete the job
-         * 
-         * 13- delete saved job -> ask for job seeker id and savedJob id and delete the job
-         * 
-         *
-         *
-         * (1, 7, 13) -> First
-         * 
-         * (6, 8, 12) -> Second
-         * 
-         * (10, 11) -> Third
-         *
-         */
-
-
-
         {
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine("===== Online Recruitment Testing =====");
+                Console.WriteLine("===== Online Recruitment System =====");
+                Console.WriteLine("1. Jobseeker Menu");
+                Console.WriteLine("2. Employer Menu");
+                Console.WriteLine("3. Shared Functions");
+                Console.WriteLine("0. Exit");
+                Console.Write("Choose an option: ");
+                string choice = Console.ReadLine();
+
+                switch (choice)
+                {
+                    case "1":
+                        ShowJobseekerMenu();
+                        break;
+                    case "2":
+                        ShowEmployerMenu();
+                        break;
+                    case "3":
+                        ShowSharedFunctionsMenu();
+                        break;
+                    case "0":
+                        return;
+                    default:
+                        Console.WriteLine("Invalid choice!");
+                        Console.ReadKey();
+                        break;
+                }
+            }
+        }
+
+        static void ShowJobseekerMenu()
+        {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("===== Jobseeker Menu =====");
                 Console.WriteLine("1. Find JobSeeker by ID");
                 Console.WriteLine("2. Add New JobSeeker");
                 Console.WriteLine("3. Update Existing JobSeeker");
-                Console.WriteLine("4. Find Employer by ID");
-                Console.WriteLine("5. Add New Employer");
-                Console.WriteLine("6. Update Existing Employer");
-                Console.WriteLine("7. Apply for Job");
-                Console.WriteLine("8. Show Applied Jobs");
-                Console.WriteLine("9. Delete Applied Job");
-                Console.WriteLine("10. Add New Vacancy");
-                Console.WriteLine("11. Save Vacancy");
-                Console.WriteLine("12. Delete Saved Vacancy");
-                Console.WriteLine("13. Add a phone number for a user");
-                Console.WriteLine("14. Search for phone number/s of a user");
-                Console.WriteLine("15. Show all job seekers");
-                Console.WriteLine("16. Show all employers");
-                Console.WriteLine("0. Exit");
+                Console.WriteLine("4. Apply for Job");
+                Console.WriteLine("5. Show Applied Jobs");
+                Console.WriteLine("6. Delete Applied Job");
+                Console.WriteLine("7. Save Vacancy");
+                Console.WriteLine("8. Delete Saved Vacancy");
+                Console.WriteLine("9. Show Saved Jobs");
+                Console.WriteLine("10. Show All Job Seekers");
+                Console.WriteLine("0. Back to Main Menu");
                 Console.Write("Choose an option: ");
                 string choice = Console.ReadLine();
 
@@ -86,43 +73,109 @@ namespace Online_Recuritment_Project
                         UpdateJobSeeker();
                         break;
                     case "4":
-                        FindEmployerByID();
-                        break;
-                    case "5":
-                        AddEmployer();
-                        break;
-                    case "6":
-                        UpdateEmployer();
-                        break;
-                    case "7":
                         ApplyForJob();
                         break;
-                    case "8":
+                    case "5":
                         ShowAppliedJobs();
                         break;
-                    case "9":
+                    case "6":
                         DeleteAppliedJob();
                         break;
-                    case "10":
-                        AddVacancy();
-                        break;
-                    case "11":
+                    case "7":
                         SaveJob();
                         break;
-                    case "12":
+                    case "8":
                         DeleteSavedJob();
                         break;
-                    case "13":
-                        AddPhoneNumber();
+                    case "9":
+                        ShowSavedJobs();
                         break;
-                    case "14":
-                        FindPhoneNumbersForUser();
-                        break;
-                    case "15":
+                    case "10":
                         ShowAllJobSeekers();
                         break;
-                    case "16":
+                    case "0":
+                        return;
+                    default:
+                        Console.WriteLine("Invalid choice!");
+                        break;
+                }
+
+                Console.WriteLine("\nPress any key to continue...");
+                Console.ReadKey();
+            }
+        }
+
+        static void ShowEmployerMenu()
+        {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("===== Employer Menu =====");
+                Console.WriteLine("1. Find Employer by ID");
+                Console.WriteLine("2. Add New Employer");
+                Console.WriteLine("3. Update Existing Employer");
+                Console.WriteLine("4. Add New Vacancy");
+                Console.WriteLine("5. Show Added Jobs by Employer");
+                Console.WriteLine("6. Show All Employers");
+                Console.WriteLine("0. Back to Main Menu");
+                Console.Write("Choose an option: ");
+                string choice = Console.ReadLine();
+
+                switch (choice)
+                {
+                    case "1":
+                        FindEmployerByID();
+                        break;
+                    case "2":
+                        AddEmployer();
+                        break;
+                    case "3":
+                        UpdateEmployer();
+                        break;
+                    case "4":
+                        AddVacancy();
+                        break;
+                    case "5":
+                        ShowAddedJobsByEmployer();
+                        break;
+                    case "6":
                         ShowAllEmployers();
+                        break;
+                    case "0":
+                        return;
+                    default:
+                        Console.WriteLine("Invalid choice!");
+                        break;
+                }
+
+                Console.WriteLine("\nPress any key to continue...");
+                Console.ReadKey();
+            }
+        }
+
+        static void ShowSharedFunctionsMenu()
+        {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("===== Shared Functions =====");
+                Console.WriteLine("1. Add a phone number for a user");
+                Console.WriteLine("2. Search for phone number/s of a user");
+                Console.WriteLine("3. Show all vacancies");
+                Console.WriteLine("0. Back to Main Menu");
+                Console.Write("Choose an option: ");
+                string choice = Console.ReadLine();
+
+                switch (choice)
+                {
+                    case "1":
+                        AddPhoneNumber();
+                        break;
+                    case "2":
+                        FindPhoneNumbersForUser();
+                        break;
+                    case "3":
+                        ShowAllVacancies();
                         break;
                     case "0":
                         return;
@@ -385,6 +438,12 @@ namespace Online_Recuritment_Project
                 return;
             }
 
+            if(clsApplying.CheckIfApplied(vacancyID, jobSeekerID))
+            {
+                Console.WriteLine("You have already applied for this job.");
+                return;
+            }
+
             string result = clsApplying.Apply(vacancyID, jobSeekerID);
             Console.WriteLine(result);
         }
@@ -502,6 +561,12 @@ namespace Online_Recuritment_Project
             if (jobSeeker == null)
             {
                 Console.WriteLine("JobSeeker not found.");
+                return;
+            }
+
+            if(clsSavingVacancy.CheckIfSaved(vacancyID, jobSeekerID))
+            {
+                Console.WriteLine("You have already saved this job.");
                 return;
             }
 
@@ -650,6 +715,112 @@ namespace Online_Recuritment_Project
                 Console.WriteLine($"Employer ID       : {row["employerID"]}");
                 Console.WriteLine($"Company Name      : {row["companyName"]}");
                 Console.WriteLine($"Company Location  : {row["companyLocation"]}");
+                Console.WriteLine("=====================================\n");
+            }
+        }
+
+        static void ShowAllVacancies() {
+            Console.Clear();
+            DataTable dt = clsVacancies.getAllVacancies();
+            if (dt == null || dt.Rows.Count == 0)
+            {
+                Console.WriteLine("No vacancies found.");
+                return;
+            }
+            Console.WriteLine("All Vacancies:");
+            foreach(DataRow row in dt.Rows)
+            {
+                Console.WriteLine("=====================================");
+                Console.WriteLine("Vacancy ID       : " + row["vacancyID"]);
+                Console.WriteLine("Job Title        : " + row["jobTitle"]);
+                Console.WriteLine("Industry         : " + row["industry"]);
+                Console.WriteLine("Description      : " + row["description"]);
+                Console.WriteLine("Location         : " + row["location"]);
+                Console.WriteLine("Job Status       : " + row["jobStatus"]);
+                Console.WriteLine("Post Date        : " + Convert.ToDateTime(row["postDate"]).ToShortDateString());
+                Console.WriteLine("Required Experience: " + row["requiredExperience"]);
+                Console.WriteLine("Salary           : " + row["salary"]);
+                Console.WriteLine("Employer ID      : " + row["employerID"]);
+                Console.WriteLine("=====================================\n");
+            }
+        }
+
+        static void ShowSavedJobs()
+        {
+            Console.Write("Enter JobSeeker ID: ");
+            if (!int.TryParse(Console.ReadLine(), out int jobSeekerID))
+            {
+                Console.WriteLine("Invalid JobSeeker ID.");
+                return;
+            }
+
+
+            var jobSeeker = clsJobSeeker.FindJobSeekerByID(jobSeekerID);
+            if (jobSeeker == null)
+            {
+                Console.WriteLine("JobSeeker not found.");
+                return;
+            }
+
+            DataTable savedJobs = clsSavingVacancy.ShowSavedJobs(jobSeekerID);
+
+            if (savedJobs == null || savedJobs.Rows.Count == 0) {
+                Console.WriteLine("No Saved jobs found.");
+                return;
+            }
+            Console.WriteLine();
+            Console.WriteLine("Job seeker Name: " + jobSeeker.user.firstName + " " + jobSeeker.user.lastName);
+            Console.WriteLine();
+            string result = "Saved Jobs:\n";
+            foreach (DataRow row in savedJobs.Rows)
+            {
+                Console.WriteLine("=====================================");
+                Console.WriteLine("Saving Job ID  : " + row["savingID"]);
+                Console.WriteLine("Vacancy Title  : " + row["jobTitle"]);
+                Console.WriteLine("Saved Date     : " + Convert.ToDateTime(row["date"]).ToShortDateString());
+                Console.WriteLine("=====================================\n");
+            }
+
+           
+        }
+
+        static void ShowAddedJobsByEmployer()
+        {
+            Console.Write("Enter Employer ID: ");
+            if (!int.TryParse(Console.ReadLine(), out int employerID))
+            {
+                Console.WriteLine("Invalid Employer ID.");
+                return;
+            }
+            var employer = clsEmployer.FindEmployerByID(employerID);
+            if (employer == null)
+            {
+                Console.WriteLine("Employer not found.");
+                return;
+            }
+            DataTable addedJobs = clsVacancies.getVacanciesByEmployerID(employerID);
+            if (addedJobs == null || addedJobs.Rows.Count == 0)
+            {
+                Console.WriteLine("No added jobs found.");
+                return;
+            }
+            Console.WriteLine();
+            Console.WriteLine("Employer Name: " + employer.user.firstName + " " + employer.user.lastName);
+            Console.WriteLine("Company Name: " + employer.companyName);
+            Console.WriteLine();
+            string result = "Added Jobs:\n";
+            foreach (DataRow row in addedJobs.Rows)
+            {
+                Console.WriteLine("=====================================");
+                Console.WriteLine("Vacancy ID     : " + row["vacancyID"]);
+                Console.WriteLine("Job Title      : " + row["jobTitle"]);
+                Console.WriteLine("Post Date      : " + Convert.ToDateTime(row["postDate"]).ToShortDateString());
+                Console.WriteLine("Industry       : " + row["industry"]);
+                Console.WriteLine("Description    : " + row["description"]);
+                Console.WriteLine("Location       : " + row["location"]);
+                Console.WriteLine("Job Status     : " + row["jobStatus"]);
+                Console.WriteLine("Required Experience: " + row["requiredExperience"]);
+                Console.WriteLine("Salary         : " + row["salary"]);
                 Console.WriteLine("=====================================\n");
             }
         }

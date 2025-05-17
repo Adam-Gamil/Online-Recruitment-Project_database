@@ -55,6 +55,10 @@ namespace BusinessLayer
             return result;
         }
 
+        public static bool CheckIfApplied(int vacancyID, int jobseekerID)
+        {
+            return clsApplyingData.CheckIfApplied(vacancyID, jobseekerID);
+        }
 
         public static string DeleteAppliedJob(int applyingID, int jobseekerID)
         {

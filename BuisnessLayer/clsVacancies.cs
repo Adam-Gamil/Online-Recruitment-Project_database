@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -102,6 +103,16 @@ namespace BuisnessLayer
             }
 
             return clsVacanciesData.UpdateVacancy(this.vacancyID, this.industry, this.jobTitle, this.description, this.location, this.jobStatus, this.postDate, this.requiredExperience, this.salary);
+        }
+
+        public static DataTable getAllVacancies()
+        {
+            return clsVacanciesData.getAllVacancies();
+        }
+
+        public static DataTable getVacanciesByEmployerID(int employerID)
+        {
+            return clsVacanciesData.getVacanciesByEmployerID(employerID);
         }
         public bool Save()
         {

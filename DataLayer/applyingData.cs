@@ -73,6 +73,34 @@ namespace DataLayer
             return dt;
         }
 
+        public static bool CheckIfApplied(int vacancyID, int jobSeekerID)
+        {
+            bool isFound = false;
+            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            string query = "SELECT Found = 1 FROM Applying WHERE vacancyID = @vacancyID AND jobSeekerID = @jobSeekerID";
+            SqlCommand command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@vacancyID", vacancyID);
+            command.Parameters.AddWithValue("@jobSeekerID", jobSeekerID);
+            int count = 0;
+            try
+            {
+                connection.Open();
+                object result = command.ExecuteScalar();
+                if (result != null)
+                {
+                    isFound = true;
+                }
+            }
+            catch
+            {
+                isFound = false;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return isFound;
+        }
         public static bool DeleteApplication(int applyingID, int jobSeekerID)
         {
             SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
