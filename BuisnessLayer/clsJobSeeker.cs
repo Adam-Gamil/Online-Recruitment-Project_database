@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataLayer;
+
+
 namespace BuisnessLayer
 {
     public class clsJobSeeker
@@ -79,6 +82,11 @@ namespace BuisnessLayer
             {
                 return null;
             }
+        }
+
+        public static DataTable getAllJobSeekers()
+        {
+            return clsJobSeekerData.getAllJobSeekers();
         }
 
         private bool _AddNewJobSeeker()

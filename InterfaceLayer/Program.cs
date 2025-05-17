@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using BuisnessLayer;
 using BusinessLayer;
 
@@ -65,6 +66,10 @@ namespace Online_Recuritment_Project
                 Console.WriteLine("10. Add New Vacancy");
                 Console.WriteLine("11. Save Vacancy");
                 Console.WriteLine("12. Delete Saved Vacancy");
+                Console.WriteLine("13. Add a phone number for a user");
+                Console.WriteLine("14. Search for phone number/s of a user");
+                Console.WriteLine("15. Show all job seekers");
+                Console.WriteLine("16. Show all employers");
                 Console.WriteLine("0. Exit");
                 Console.Write("Choose an option: ");
                 string choice = Console.ReadLine();
@@ -106,6 +111,18 @@ namespace Online_Recuritment_Project
                         break;
                     case "12":
                         DeleteSavedJob();
+                        break;
+                    case "13":
+                        AddPhoneNumber();
+                        break;
+                    case "14":
+                        FindPhoneNumbersForUser();
+                        break;
+                    case "15":
+                        ShowAllJobSeekers();
+                        break;
+                    case "16":
+                        ShowAllEmployers();
                         break;
                     case "0":
                         return;
@@ -275,6 +292,9 @@ namespace Online_Recuritment_Project
             Console.Write("Company Name: ");
             employer.companyName = Console.ReadLine();
 
+            Console.Write("Company Location: ");
+            employer.companyLocation = Console.ReadLine();
+
             if (employer.Save())
                 Console.WriteLine("Employer added successfully!");
             else
@@ -327,6 +347,12 @@ namespace Online_Recuritment_Project
             input = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(input))
                 employer.companyName = input;
+
+
+            Console.Write($"Current Company Location: {employer.companyLocation}, New: ");
+            input = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(input))
+                employer.companyLocation = input;
 
             if (employer.Save())
                 Console.WriteLine("Employer updated successfully!");
@@ -508,6 +534,124 @@ namespace Online_Recuritment_Project
 
             string result = clsSavingVacancy.DeleteSavedJob(savingID, jobSeekerID);
             Console.WriteLine(result);
+        }
+
+        static void AddPhoneNumber()
+        {
+            Console.WriteLine("Enter User ID to add a phone number for:");
+            int userID = int.Parse(Console.ReadLine());
+            var user = clsUser.findUser(userID);
+            if (user == null)
+            {
+                Console.WriteLine("User not found.");
+                return;
+            }
+            Console.WriteLine("Enter Phone Number:");
+
+            string phoneNumber = Console.ReadLine();
+
+            var phoneNumberObj = new clsPhoneNumber();
+            phoneNumberObj.userID = userID;
+            phoneNumberObj.phoneNumber = phoneNumber;
+
+
+            if (phoneNumberObj._AddNewUserPhoneNumber())
+            {
+                Console.WriteLine("Phone number added successfully!");
+            }
+            else
+            {
+                Console.WriteLine("Failed to add phone number.");
+            }
+        }
+
+        static void FindPhoneNumbersForUser()
+        {
+            Console.WriteLine("Enter User ID to find phone numbers for:");
+            int userID = int.Parse(Console.ReadLine());
+            var user = clsUser.findUser(userID);
+            if (user == null)
+            {
+                Console.WriteLine("User not found.");
+                return;
+            }
+
+            DataTable dataTable = clsPhoneNumber.findUserPhoneNumber(userID);
+            if (dataTable != null) 
+            {
+                if (dataTable.Rows.Count == 0)
+                {
+                    Console.WriteLine("No phone numbers found for this user.");
+                    return;
+                }
+               
+            }
+            Console.WriteLine($"Phone numbers for User ID {userID}:");
+
+            int cnt = 1;
+            foreach (DataRow row in dataTable.Rows)
+            {
+                Console.WriteLine($"Phone Number {cnt++}:");
+                Console.WriteLine($"Phone Number ID: {row["phoneNumberID"]}");
+                Console.WriteLine($"Phone Number: {row["phoneNumber"]}");
+                Console.WriteLine($"User Name: " + user.firstName + user.lastName);
+                Console.WriteLine();
+            }
+           
+        }
+
+        static void ShowAllJobSeekers()
+        {
+            DataTable dt = clsJobSeeker.getAllJobSeekers();
+            if (dt == null || dt.Rows.Count == 0)
+            {
+                Console.WriteLine("No Job Seekers found.");
+                return;
+            }
+            Console.WriteLine("All Job Seekers:");
+            foreach (DataRow row in dt.Rows)
+            {
+                Console.WriteLine("=====================================");
+                Console.WriteLine($"User ID        : {row["userID"]}");
+                Console.WriteLine($"Name           : {row["firstName"]} {row["lastName"]}");
+                Console.WriteLine($"Gender         : {row["gender"]}");
+                Console.WriteLine($"Birth Date     : {Convert.ToDateTime(row["birthDate"]).ToShortDateString()}");
+                Console.WriteLine($"Email          : {row["email"]}");
+                Console.WriteLine($"JobSeeker ID   : {row["jobSeekerID"]}");
+                Console.WriteLine($"CV             : {row["cv"]}");
+                Console.WriteLine($"Address        : {row["address"]}");
+                Console.WriteLine($"Education      : {row["educationLevel"]}");
+                Console.WriteLine($"Nationality    : {row["nationality"]}");
+                Console.WriteLine($"Fav. Workplace : {row["favouriteWorkPlace"]}");
+                Console.WriteLine($"Experience     : {row["experience"]}");
+                Console.WriteLine("=====================================\n");
+            }
+
+        }
+
+        static void ShowAllEmployers()
+        {
+            DataTable dt = clsEmployer.getAllEmployers();
+            if (dt == null || dt.Rows.Count == 0)
+            {
+                Console.WriteLine("No Employers found.");
+                return;
+            }
+
+            Console.WriteLine("All Employers:");
+            foreach (DataRow row in dt.Rows)
+            {
+                Console.WriteLine("=====================================");
+                Console.WriteLine($"User ID           : {row["userID"]}");
+                Console.WriteLine($"Name              : {row["firstName"]} {row["lastName"]}");
+                Console.WriteLine($"Gender            : {row["gender"]}");
+                Console.WriteLine($"Birth Date        : {Convert.ToDateTime(row["birthDate"]).ToShortDateString()}");
+                Console.WriteLine($"Email             : {row["email"]}");
+                Console.WriteLine($"Employer ID       : {row["employerID"]}");
+                Console.WriteLine($"Company Name      : {row["companyName"]}");
+                Console.WriteLine($"Company Location  : {row["companyLocation"]}");
+                Console.WriteLine("=====================================\n");
+            }
         }
     }
 }

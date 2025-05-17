@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -61,6 +62,34 @@ namespace DataLayer
             return isFound;
         }
 
+        public static DataTable getAllJobSeekers()
+        {
+            DataTable dt = new DataTable();
+            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            string query = "SELECT Users.userID,  Users.firstName, Users.lastName, Users.gender, Users.birthDate, Users.email, JobSeekers.jobSeekerID, JobSeekers.cv, JobSeekers.address, JobSeekers.educationLevel, JobSeekers.nationality, JobSeekers.favouriteWorkPlace, JobSeekers.experience FROM JobSeekers INNER JOIN Users ON JobSeekers.userID = Users.userID;";
+            SqlCommand command = new SqlCommand(query, connection);
+            try
+            {
+                connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    dt.Load(reader);
+                }
+
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                //Console.WriteLine("Error: " + ex.Message);
+                dt = null;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dt;
+        }
 
         public static int AddNewJobSeeker(string cv, string address, string educationLevel, string nationality, string favouriteWorkPlace, string experience, int userID)
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -49,6 +50,33 @@ namespace DataLayer
             return isFound;
         }
 
+
+        public static DataTable getAllEmployers()
+        {
+            DataTable dt = new DataTable();
+            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            string query = "SELECT Users.userID,  Users.firstName, Users.lastName, Users.gender, Users.birthDate, Users.email, Employers.employerID, Employers.companyName,  Employers.companyLocation FROM Employers INNER JOIN Users ON Employers.userID = Users.userID;";
+            SqlCommand command = new SqlCommand(query, connection);
+            try
+            {
+                connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    dt.Load(reader);
+                }
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                //Console.WriteLine("Error: " + ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dt;
+        }
         public static int AddNewEmployer(string companyName, string companyLocation, int userID)
         {
             int employerID = -1;
