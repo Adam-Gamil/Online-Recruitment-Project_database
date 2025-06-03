@@ -64,5 +64,5 @@ This project demonstrates skills in:
 - ERD converted into SQL Data Definition Language scripts.
 
 ### 3. SQL Queries
-To answer critical recruitment analytics questions.
+- To answer critical recruitment analytics questions.
 
